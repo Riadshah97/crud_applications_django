@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     #Third_party_package
     'rest_framework',
     'rest_framework_simplejwt',
+    'django_celery_results',
+    'django_celery_beat',
 
     
     
@@ -176,3 +178,20 @@ CACHES = {
         }
     }
 }
+
+#SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+#SESSION_CACHE_ALIAS = 'default'  # Matches 'default' from CACHES
+
+# Celery Configuration Options
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'  # Message broker
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/1'  # Task result store
+CELERY_BEAT_SCHEDULE = {
+    'sample-task': {
+        'task': 'myapp.tasks.sample_task',  # Your Celery task path
+        'schedule': 10.0,  # Run every 10 seconds
+    },
+}
+
+# in settings.py or your celery configuration file
+CELERYD_POOL = 'solo'
+
